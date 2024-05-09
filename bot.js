@@ -97,8 +97,7 @@ app.listen(port, () => {
 printWatermark();
 
 
-if (message.content == "aaaaa") {
- message.channel.send("aaaaa");
+
 /*
 
   ________.__                        _____.___.___________
