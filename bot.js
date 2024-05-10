@@ -130,7 +130,6 @@ client.on('voiceStateUpdate', async (oldState, newState) => {
     }
 });
 
-client.login(token);
 
 
 
