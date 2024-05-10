@@ -98,6 +98,43 @@ printWatermark();
 
 
 
+
+
+
+
+
+
+
+const channelId = '1073430134268383252'; // 通知を送信するチャンネルIDを置き換える
+
+client.on('voiceStateUpdate', async (oldState, newState) => {
+    const member = newState.member;
+    const channel = client.channels.cache.get(channelId);
+
+    if (!member || member.bot || newState.channel === null) return;
+
+    if (newState.channelId === channelId) {
+        const embed = new Discord.MessageEmbed()
+            .setTitle('ボイスチャンネルに参加しました')
+            .setDescription(`${member.user.tag}さんが ${newState.channel.name} に参加しました。`)
+            .setTimestamp()
+            .setColor('#0099ff');
+        channel.send(embed);
+    } else if (oldState.channelId === channelId) {
+        const embed = new Discord.MessageEmbed()
+            .setTitle('ボイスチャンネルを退出しました')
+            .setDescription(`${member.user.tag}さんが ${oldState.channel.name} から退出しました。`)
+            .setTimestamp()
+            .setColor('#ff0000');
+        channel.send(embed);
+    }
+});
+
+client.login(token);
+
+
+
+
 /*
 
   ________.__                        _____.___.___________
