@@ -105,29 +105,19 @@ printWatermark();
 
 
 
-const channelId = '1073430134268383252'; // 通知を送信するチャンネルIDを置き換える
+const mainChannelId = [1185590315273428992];
 
-client.on('voiceStateUpdate', async (oldState, newState) => {
-    const member = newState.member;
-    const channel = client.channels.cache.get(channelId);
-
-    if (!member || member.bot || newState.channel === null) return;
-
-    if (newState.channelId === channelId) {
-        const embed = new Discord.MessageEmbed()
-            .setTitle('ボイスチャンネルに参加しました')
-            .setDescription(`${member.user.tag}さんが ${newState.channel.name} に参加しました。`)
-            .setTimestamp()
-            .setColor('#0099ff');
-        channel.send(embed);
-    } else if (oldState.channelId === channelId) {
-        const embed = new Discord.MessageEmbed()
-            .setTitle('ボイスチャンネルを退出しました')
-            .setDescription(`${member.user.tag}さんが ${oldState.channel.name} から退出しました。`)
-            .setTimestamp()
-            .setColor('#ff0000');
-        channel.send(embed);
-    }
+client.on('voiceStateUpdate', (oldGuildMember, newGuildMember) =>{
+ if(oldGuildMember.voiceChannelID === undefined && newGuildMember.voiceChannelID !== undefined){
+   if(client.channels.get(newGuildMember.voiceChannelID).members.size == 1){
+     if (newGuildMember.voiceChannelID == 1199702387447836802) {
+       newGuildMember.voiceChannel.createInvite({"maxAge":"0"})
+         .then(invite => sendMsg(
+           mainChannelId, "<@" + newGuildMember.user.id +"> が通話を開始しました！\n" + invite.url
+         ));
+     }
+   }
+ }
 });
 
 
